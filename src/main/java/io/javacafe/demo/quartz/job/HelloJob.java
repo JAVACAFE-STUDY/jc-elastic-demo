@@ -30,7 +30,7 @@ public class HelloJob implements Job {
 			con.setRequestMethod("GET");
 			
 			int responseCode = con.getResponseCode();
-			log.info("Nginx 호출결과 : {}", responseCode);
+			log.debug("Nginx 호출결과 : {}", responseCode);
 	
 		} catch(Exception e) {
 			log.error(e.getMessage(), e);

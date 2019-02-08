@@ -23,53 +23,12 @@ server:
 
 logging:
   file: C:\javacafe\jc-elastic-demo\log4j\daily.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n"
   level:
-    org.thymeleaf: INFO
-    org.springframework.web: INFO
-    org.hibernate.SQL: INFO
-    org.quartz.core: INFO
-    org.h2.server.web: INFO
-    org.springframework.security: INFO
-    com.opensymphony: INFO
+    io.javacafe: DEBUG
             
 
----
-spring:
-  profiles: dev   
-          
-server:
-  tomcat:
-    basedir: /home/irteam/work
-    accesslog:
-      directory: /home/irteam/logs/etomcat
-      pattern: '%h %l %u %t "%r" %s %b %D'
-      enabled: true
-      suffix: .log
 
-logging:
-  file: /home1/irteam/logs/log4j/daily.log
-  config: classpath:logback-spring.xml
-  
-  
----
-spring:
-  profiles: real   
-         
-server:
-  tomcat:
-    basedir: /home/irteam/work
-    accesslog:
-      directory: /home/irteam/logs/etomcat
-      pattern: '%h %l %u %t "%r" %s %b %D'
-      enabled: true
-      suffix: .log
-      
-logging:
-  file: /home1/irteam/logs/log4j/daily.log
-  config: classpath:logback-spring.xml      
-      
-  
-
-  
-  
   
