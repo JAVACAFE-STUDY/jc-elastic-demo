@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>자동완성 DEMO</title>
+  
+  
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+  <style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+  .ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }  
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+
+
+	<div class="ui-widget">
+	  <button id="id_btn">선택</button>
+	</div>
+	<br> 
+	
+	
+	<div class="ui-widget">
+	  <label>영화 : </label>
+	  <input id="id_movie" data-empNo="TEST" style="width:300px">
+	</div>
+	<br> 
+ 
+
+
+	
+	<script type="text/javascript">
+		$(function() {		
+		    $("#id_movie").autocomplete({
+		        source: "/api/movieAuto",
+		        minLength: 0,
+		        response: function(event, ui) {
+		        	// 데이터 로딩시 Callback
+		        	console.log("Load : " + ui);
+		        },
+		        select: function(event, ui) {
+					// 항목 선택시 Callback
+		        	console.log("Selected : " + ui);
+		        	$(this).data("movieCd", ui.item.movieCd);        	
+		        },
+		        focus: function(event, ui) {
+		        	// 한글사용시 버그 해결을 위해 이벤트를 반드시 구현해야 한다.
+		        	console.log("Focus : " + ui);
+		            return false;
+		        }
+		    }).focus(function(){
+		        if (this.value == ""){
+		            $(this).autocomplete("search");
+		        }
+		    }).autocomplete("instance")._renderItem = function(ul, item) {
+		    	
+		    	var baseData = item.movieNm + ' (' + item.prdtYear + ')';
+		    	var text = baseData;
+		    	
+		    	// 검색어 강조
+				var keyword = item.term;
+				var arrKeyword = keyword.split(" ");
+		    	for (var i in arrKeyword) {
+		    		text = text.replace(arrKeyword[i], "<b style='background-color: #efbc04;font-color:black;'>" + arrKeyword[i] + "</b>");
+		    	}		
+		    					
+				// 디버깅 정보 추가
+				//text = text + ' -----------------------------------------> [' + item.acType + ']  [' + item.acLocale + ']  [' + item.item + ']  [' + item.empId + ']  [' + item.score + ']';
+		    	
+				// 데이터 설정
+				item.value = baseData;
+		    	
+				// 화면 설정
+				return $("<li>")
+			        .data("item.autocomplete", item)
+			        .append('<div>' + text + '</div>')
+			        .appendTo(ul);
+		    };    
+		});
+		
+		
+		$('#id_movie').focus(function(){
+			$('#id_movie').val("");
+			$('#id_movie').data("movieCd", "");
+		});
+		
+		$('#id_movie').blur(function(){
+			//alert('포커스를 벗어났습니다');
+			var value = $('#id_movie').data("movieCd");
+			if (value == '') {
+				$('#id_movie').val("");
+				$('#id_movie').data("movieCd", "");
+			}
+		});
+		
+		$('#id_btn').click(function(){
+			var value = $('#id_movie').data("movieCd");
+			alert('선택된 영화 : ' + value);
+		});
+		
+	</script>
+  
+   
+</body>
+</html>

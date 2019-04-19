@@ -30,8 +30,8 @@ public class QuartzConfig {
 		
 		// 스캐줄러 실행
 		Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-		scheduler.start();
-		scheduler.scheduleJob(jobDetail, trigger);
+		//scheduler.start();
+		//scheduler.scheduleJob(jobDetail, trigger);
 		
 		return scheduler;
 	}
